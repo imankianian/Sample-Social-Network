@@ -6,6 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.samplesocialnetwork.R
 import com.example.samplesocialnetwork.databinding.PostLayoutBinding
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import javax.inject.Inject
@@ -28,8 +29,15 @@ class PostsAdapter @Inject constructor():
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Post?) {
-            binding.post = item
-            binding.postImage.load(item?.contentUrl)
+            item?.let {
+                binding.post = item
+                binding.postImage.load(item.contentUrl)
+                if (item.favorite) {
+                    binding.icFavorite.setImageResource(R.drawable.ic_redheart)
+                } else {
+                    binding.icFavorite.setImageResource(R.drawable.ic_emptyheart)
+                }
+            }
         }
     }
 

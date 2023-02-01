@@ -18,39 +18,53 @@
             <ImageView
                 android:id="@+id/post_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:scaleType="centerCrop"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ic_favorite"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_image" />
 
             <TextView
                 android:id="@+id/likes"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
+                android:layout_marginStart="2dp"
                 android:layout_height="wrap_content"
                 android:text="@{@string/likes(post.likesCount)}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_image"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/ic_favorite"
+                app:layout_constraintTop_toBottomOf="@+id/post_image" />
 
             <TextView
                 android:id="@+id/caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FF666666"
                 android:text="@{post.caption}"
+                android:layout_marginStart="15dp"
                 android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@+id/likes"
-                tools:layout_editor_absoluteX="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ic_favorite" />
 
             <TextView
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="15dp"
                 android:text="@{@string/comments(post.commentsCount)}"
+                android:textColor="#FFAAAAAA"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/caption"
-                android:textStyle="bold"/>
+                app:layout_constraintTop_toBottomOf="@+id/caption" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
