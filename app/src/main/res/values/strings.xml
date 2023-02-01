@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sample Social Network</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="likes">%d likes</string>
+    <string name="comments">%d comments</string>
 </resources>
