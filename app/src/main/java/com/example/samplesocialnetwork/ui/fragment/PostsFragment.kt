@@ -36,7 +36,7 @@ class PostsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentPostsBinding.inflate(inflater, container, false)
         binding.postsViewModel = viewModel
-        val postsAdapter = PostsAdapter()
+        val postsAdapter = PostsAdapter(viewModel.likeListener)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = postsAdapter

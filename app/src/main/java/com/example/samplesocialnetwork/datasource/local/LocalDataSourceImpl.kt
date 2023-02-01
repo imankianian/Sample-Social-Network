@@ -16,18 +16,9 @@ class LocalDataSourceImpl @Inject constructor(
 
     override fun getPostComments(postId: Int) = myDatabase.mainDao.getPostComments(postId)
 
-
-    override suspend fun likeAPost(post: Post) {
+    override suspend fun updatePost(post: Post) {
         withContext(dispatcher) {
-            val updatedPost = post.copy(likesCount = post.likesCount + 1, favorite = true)
-            myDatabase.mainDao.updatePost(updatedPost)
-        }
-    }
-
-    override suspend fun unLikeAPost(post: Post) {
-        withContext(dispatcher) {
-            val updatedPost = post.copy(likesCount = post.likesCount - 1, favorite = false)
-            myDatabase.mainDao.updatePost(updatedPost)
+            myDatabase.mainDao.updatePost(post)
         }
     }
 

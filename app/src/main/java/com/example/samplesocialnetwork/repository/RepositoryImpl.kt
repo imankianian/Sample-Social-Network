@@ -16,15 +16,9 @@ class RepositoryImpl @Inject constructor(
 
     override fun getPostComments(postId: Int) = localDataSource.getPostComments(postId)
 
-    override suspend fun likeAPost(post: Post) {
+    override suspend fun updatePost(post: Post) {
         withContext(dispatcher) {
-            localDataSource.likeAPost(post)
-        }
-    }
-
-    override suspend fun unLikeAPost(post: Post) {
-        withContext(dispatcher) {
-            localDataSource.likeAPost(post)
+            localDataSource.updatePost(post)
         }
     }
 

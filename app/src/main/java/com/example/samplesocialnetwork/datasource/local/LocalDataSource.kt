@@ -8,7 +8,6 @@ interface LocalDataSource {
 
     fun getPosts(): PagingSource<Int, Post>
     fun getPostComments(postId: Int): PagingSource<Int, Comment>
-    suspend fun likeAPost(post: Post)
-    suspend fun unLikeAPost(post: Post)
+    suspend fun updatePost(post: Post)
     suspend fun addSingleComment(post: Post, comment: Comment)
 }

@@ -10,6 +10,7 @@ import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import com.example.samplesocialnetwork.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,4 +26,10 @@ class PostsViewModel @Inject constructor(private val repository: Repository): Vi
     ) {
         repository.getPosts()
     }.flow.cachedIn(viewModelScope)
+
+    val likeListener: (post: Post) -> Unit = { post ->
+        viewModelScope.launch {
+            repository.updatePost(post)
+        }
+    }
 }

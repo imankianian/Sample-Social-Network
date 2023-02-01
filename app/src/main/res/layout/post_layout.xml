@@ -27,11 +27,13 @@
 
             <ImageView
                 android:id="@+id/ic_favorite"
+                android:clickable="true"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_image" />
+                app:layout_constraintTop_toBottomOf="@+id/post_image"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/likes"
