@@ -64,13 +64,24 @@ class PostDetailsFragment : Fragment() {
                         }
                     }
                 }
-                val commentsAdapter = PostCommentsAdapter()
-                binding.commentsRecyclerview.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = commentsAdapter
+                launch {
+                    val commentsAdapter = PostCommentsAdapter()
+                    binding.commentsRecyclerview.apply {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = commentsAdapter
+                    }
+                    viewModel.commentsFlow.collect() {
+                        commentsAdapter.submitData(it)
+                    }
                 }
-                viewModel.commentsFlow.collect() {
-                    commentsAdapter.submitData(it)
+                binding.addComment.load(R.drawable.ic_add_comment)
+                binding.addComment.setOnClickListener {
+                    val text = binding.newComment.text.toString()
+                    if (text != null && text != "") {
+                        Log.d(TAG, "comment is ${text.toString()}")
+                        viewModel.addComment(text.toString())
+                    }
+                    binding.newComment.text.clear()
                 }
             }
         }

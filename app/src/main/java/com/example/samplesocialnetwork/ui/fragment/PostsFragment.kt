@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.samplesocialnetwork.Data
@@ -47,10 +49,12 @@ class PostsFragment : Fragment() {
             adapter = postsAdapter
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            Data.initDB(myDatabase)
-            Log.d(TAG, "inside lifecycle")
-            viewModel.postFlow.collect {
-                postsAdapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Data.initDB(myDatabase)
+                Log.d(TAG, "inside lifecycle")
+                viewModel.postFlow.collect {
+                    postsAdapter.submitData(it)
+                }
             }
         }
         return binding.root

@@ -1,7 +1,5 @@
 package com.example.samplesocialnetwork.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -21,6 +19,7 @@ import javax.inject.Inject
 class PostDetailsViewModel @Inject constructor(private val repository: Repository): ViewModel() {
 
     private var postId: Int? = null
+    private lateinit var post: Post
 
     fun setPostId(postId: Int?) {
         postId?.let {
@@ -31,6 +30,7 @@ class PostDetailsViewModel @Inject constructor(private val repository: Repositor
     val postFlow: Flow<Post> = flow {
         postId?.let {
             repository.getSinglePost(postId!!).collect {
+                post = it
                 emit(it)
             }
         }
@@ -38,10 +38,8 @@ class PostDetailsViewModel @Inject constructor(private val repository: Repositor
 
     val commentsFlow: Flow<PagingData<Comment>> = Pager(
         config = PagingConfig(
-            pageSize = 10,
-            enablePlaceholders = false,
-            prefetchDistance = 1,
-            initialLoadSize = 10
+            pageSize = 100,
+            enablePlaceholders = false
         )
     ) {
         repository.getPostComments(postId!!)
@@ -50,6 +48,17 @@ class PostDetailsViewModel @Inject constructor(private val repository: Repositor
     val likeListener: (post: Post) -> Unit = { post ->
         viewModelScope.launch {
             repository.updatePost(post)
+        }
+    }
+
+    fun addComment(text: String) {
+
+        // Since we don't track users at this time, we assume it's a default userId like 1
+        val comment = Comment(postId = post.id, userId = 1, content = text)
+        viewModelScope.launch {
+            post?.let {
+                repository.addSingleComment(post, comment)
+            }
         }
     }
 }
