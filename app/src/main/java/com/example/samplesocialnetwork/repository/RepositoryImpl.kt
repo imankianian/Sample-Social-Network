@@ -12,6 +12,8 @@ class RepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource,
     @IoDispatcher private val dispatcher: CoroutineDispatcher): Repository {
 
+    override fun getSinglePost(postId: Int) = localDataSource.getSinglePost(postId)
+
     override fun getPosts() = localDataSource.getPosts()
 
     override fun getPostComments(postId: Int) = localDataSource.getPostComments(postId)

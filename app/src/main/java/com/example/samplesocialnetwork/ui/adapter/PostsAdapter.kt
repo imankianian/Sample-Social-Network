@@ -1,4 +1,4 @@
-package com.example.samplesocialnetwork.ui
+package com.example.samplesocialnetwork.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +13,13 @@ import com.example.samplesocialnetwork.databinding.PostLayoutBinding
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import javax.inject.Inject
 
-class PostsAdapter @Inject constructor(private val likeListener: (post: Post) -> Unit):
+class PostsAdapter @Inject constructor(private val postListener: (postId: Int) -> Unit,
+                                       private val likeListener: (post: Post) -> Unit):
     PagingDataAdapter<Post, PostsAdapter.PostViewHolder>(PostComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        PostViewHolder(likeListener,
+        PostViewHolder(postListener,
+            likeListener,
             PostLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
@@ -27,7 +29,8 @@ class PostsAdapter @Inject constructor(private val likeListener: (post: Post) ->
         getItem(position)?.let { holder.bind(it) }
     }
 
-    class PostViewHolder(private val likeListener: (post: Post) -> Unit,
+    class PostViewHolder(private val postListener: (postId: Int) -> Unit,
+                         private val likeListener: (post: Post) -> Unit,
                          private val binding: PostLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -50,6 +53,9 @@ class PostsAdapter @Inject constructor(private val likeListener: (post: Post) ->
                         likeListener(item.copy(likesCount = item.likesCount + 1, favorite = true))
                         binding.icFavorite.setImageResource(R.drawable.ic_redheart)
                     }
+                }
+                binding.postImage.setOnClickListener {
+                    postListener(item.id)
                 }
             }
         }

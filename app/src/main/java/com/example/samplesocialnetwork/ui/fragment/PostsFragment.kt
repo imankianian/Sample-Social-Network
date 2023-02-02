@@ -8,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.samplesocialnetwork.Data
 import com.example.samplesocialnetwork.TAG
 import com.example.samplesocialnetwork.databinding.FragmentPostsBinding
 import com.example.samplesocialnetwork.datasource.local.db.MyDatabase
-import com.example.samplesocialnetwork.ui.PostsAdapter
+import com.example.samplesocialnetwork.ui.adapter.PostsAdapter
 import com.example.samplesocialnetwork.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -36,7 +37,11 @@ class PostsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentPostsBinding.inflate(inflater, container, false)
         binding.postsViewModel = viewModel
-        val postsAdapter = PostsAdapter(viewModel.likeListener)
+        val postListener: (postId: Int) -> Unit = { postId ->
+            val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId)
+            this.findNavController().navigate(action)
+        }
+        val postsAdapter = PostsAdapter(postListener, viewModel.likeListener)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = postsAdapter

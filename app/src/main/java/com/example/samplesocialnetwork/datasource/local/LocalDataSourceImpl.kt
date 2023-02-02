@@ -12,6 +12,8 @@ class LocalDataSourceImpl @Inject constructor(
     private val myDatabase: MyDatabase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher): LocalDataSource {
 
+    override fun getSinglePost(postId: Int) = myDatabase.mainDao.getSinglePost(postId)
+
     override fun getPosts() = myDatabase.mainDao.getPosts()
 
     override fun getPostComments(postId: Int) = myDatabase.mainDao.getPostComments(postId)

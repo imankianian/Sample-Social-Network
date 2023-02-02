@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import com.example.samplesocialnetwork.datasource.local.db.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MainDao {
@@ -26,6 +27,9 @@ interface MainDao {
 
     @Query("SELECT * FROM users WHERE id = 1")
     suspend fun getFirstUser(): User
+
+    @Query("SELECT * FROM posts WHERE id = :postId")
+    fun getSinglePost(postId: Int): Flow<Post>
 
     @Query("SELECT * FROM posts")
     fun getPosts(): PagingSource<Int, Post>
