@@ -3,6 +3,7 @@ package com.example.samplesocialnetwork.repository
 import com.example.samplesocialnetwork.datasource.local.LocalDataSource
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
+import com.example.samplesocialnetwork.datasource.local.paging.PostPagingSource
 import com.example.samplesocialnetwork.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ class RepositoryImpl @Inject constructor(
 
     override fun getSinglePost(postId: Int) = localDataSource.getSinglePost(postId)
 
-    override fun getPosts() = localDataSource.getPosts()
+    override fun getPosts() = PostPagingSource(localDataSource, dispatcher)
 
     override fun getPostComments(postId: Int) = localDataSource.getPostComments(postId)
 

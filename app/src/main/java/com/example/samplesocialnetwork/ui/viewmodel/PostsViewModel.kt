@@ -19,7 +19,9 @@ class PostsViewModel @Inject constructor(private val repository: Repository): Vi
     val postFlow: Flow<PagingData<Post>> = Pager(
         config = PagingConfig(
             pageSize = 10,
-            enablePlaceholders = false
+            enablePlaceholders = false,
+            prefetchDistance = 1,
+            initialLoadSize = 10
         )
     ) {
         repository.getPosts()

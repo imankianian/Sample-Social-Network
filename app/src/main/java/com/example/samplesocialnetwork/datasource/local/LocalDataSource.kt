@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface LocalDataSource {
 
     fun getSinglePost(postId: Int): Flow<Post>
-    fun getPosts(): PagingSource<Int, Post>
+    fun getPosts(start: Int, end: Int): List<Post>
     fun getPostComments(postId: Int): PagingSource<Int, Comment>
     suspend fun updatePost(post: Post)
     suspend fun addSingleComment(post: Post, comment: Comment)

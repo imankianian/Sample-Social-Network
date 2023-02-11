@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.samplesocialnetwork.Data
 import com.example.samplesocialnetwork.TAG
@@ -19,6 +21,9 @@ import com.example.samplesocialnetwork.datasource.local.db.MyDatabase
 import com.example.samplesocialnetwork.ui.adapter.PostsAdapter
 import com.example.samplesocialnetwork.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,10 +55,18 @@ class PostsFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Data.initDB(myDatabase)
-                Log.d(TAG, "inside lifecycle")
-                viewModel.postFlow.collect {
-                    postsAdapter.submitData(it)
+                launch {
+                    Data.initDB(myDatabase)
+                    Log.d(TAG, "inside lifecycle")
+                    viewModel.postFlow.collectLatest {
+                        postsAdapter.submitData(it)
+                    }
+                }
+                launch {
+                    postsAdapter.loadStateFlow.collect {
+                        binding.prependProgress.isVisible = it.source.prepend is LoadState.Loading
+                        binding.appendProgress.isVisible = it.source.append is LoadState.Loading
+                    }
                 }
             }
         }

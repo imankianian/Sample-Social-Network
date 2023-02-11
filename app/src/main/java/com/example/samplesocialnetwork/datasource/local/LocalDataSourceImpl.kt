@@ -14,7 +14,7 @@ class LocalDataSourceImpl @Inject constructor(
 
     override fun getSinglePost(postId: Int) = myDatabase.mainDao.getSinglePost(postId)
 
-    override fun getPosts() = myDatabase.mainDao.getPosts()
+    override fun getPosts(start: Int, end: Int) = myDatabase.mainDao.getPosts(start, end)
 
     override fun getPostComments(postId: Int) = myDatabase.mainDao.getPostComments(postId)
 
