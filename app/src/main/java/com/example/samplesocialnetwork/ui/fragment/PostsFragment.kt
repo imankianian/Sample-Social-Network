@@ -24,7 +24,6 @@ import com.example.samplesocialnetwork.ui.adapter.PostsAdapter
 import com.example.samplesocialnetwork.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,6 +41,8 @@ class PostsFragment : Fragment() {
     private val viewModel by viewModels<PostsViewModel>()
     private lateinit var posts: List<Post>
     private var end = 10
+    private var lock = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,13 +71,16 @@ class PostsFragment : Fragment() {
                         binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
                             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                                 launch {
-                                    Log.d(TAG, "Reached end of recyclerview")
                                     if (!recyclerView.canScrollVertically(1)) {
-                                        binding.appendProgress.visibility = VISIBLE
-                                        delay(3000)
-                                        postsAdapter.submitList(getPosts())
-                                        binding.appendProgress.visibility = GONE
-                                        Log.d(TAG, "reached end of recyclerview")
+                                        if (!lock) {
+                                            lock = true
+                                            Log.d(TAG, "loading new data")
+                                            binding.appendProgress.visibility = VISIBLE
+                                            delay(3000)
+                                            postsAdapter.submitList(getPosts())
+                                            binding.appendProgress.visibility = GONE
+                                            lock = false
+                                        }
                                     }
                                 }
                             }
