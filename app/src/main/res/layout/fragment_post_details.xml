@@ -88,7 +88,7 @@
                     android:id="@+id/load_more"
                     android:text="Load More..."
                     android:visibility="gone"
-                    app:backgroundTint="#FFFFFFFF"
+                    app:backgroundTint="#FAFAFAFA"
                     android:textColor="@color/black"/>
 
             </LinearLayout>

@@ -84,6 +84,7 @@ class PostDetailsFragment : Fragment() {
                 }
                 launch {
                     viewModel.getPostComments().collectLatest {
+                        end = 10
                         comments = it
                         commentsAdapter.submitList(getComments())
                         binding.addComment.load(R.drawable.ic_add_comment)

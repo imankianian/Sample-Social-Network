@@ -66,6 +66,7 @@ class PostsFragment : Fragment() {
                     Data.initDB(myDatabase)
                     Log.d(TAG, "inside lifecycle")
                     viewModel.getPosts().collectLatest {
+                        end = 10
                         posts = it
                         postsAdapter.submitList(getPosts())
                         binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
