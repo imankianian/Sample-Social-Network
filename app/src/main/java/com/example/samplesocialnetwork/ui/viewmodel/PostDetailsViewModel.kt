@@ -2,14 +2,12 @@ package com.example.samplesocialnetwork.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import com.example.samplesocialnetwork.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,9 +32,7 @@ class PostDetailsViewModel @Inject constructor(private val repository: Repositor
         }
     }
 
-    fun getPostComments(): Flow<List<Comment>> {
-        return repository.getPostComments(postId!!)
-    }
+    fun getPostComments() = repository.getPostComments(postId!!)
 
     val likeListener: (post: Post) -> Unit = { post ->
         viewModelScope.launch {

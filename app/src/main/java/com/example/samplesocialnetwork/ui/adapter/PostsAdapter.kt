@@ -3,8 +3,8 @@ package com.example.samplesocialnetwork.ui.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.samplesocialnetwork.R
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class PostsAdapter @Inject constructor(private val postListener: (postId: Int) -> Unit,
                                        private val likeListener: (post: Post) -> Unit):
-    PagingDataAdapter<Post, PostsAdapter.PostViewHolder>(PostComparator) {
+    ListAdapter<Post, PostsAdapter.PostViewHolder>(PostComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         PostViewHolder(postListener,

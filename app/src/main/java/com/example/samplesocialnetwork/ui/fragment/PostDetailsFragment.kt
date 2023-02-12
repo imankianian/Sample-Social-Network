@@ -17,10 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.samplesocialnetwork.R
 import com.example.samplesocialnetwork.TAG
@@ -29,12 +26,8 @@ import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.ui.adapter.PostCommentsAdapter
 import com.example.samplesocialnetwork.ui.viewmodel.PostDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.scan
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 import kotlin.math.min
 
 

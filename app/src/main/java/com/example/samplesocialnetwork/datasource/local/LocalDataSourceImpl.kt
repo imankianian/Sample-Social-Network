@@ -5,7 +5,7 @@ import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import com.example.samplesocialnetwork.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -13,14 +13,11 @@ class LocalDataSourceImpl @Inject constructor(
     private val myDatabase: MyDatabase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher): LocalDataSource {
 
-    override fun getSinglePost(postId: Int) = myDatabase.mainDao.getSinglePost(postId)
+    override fun getSinglePost(postId: Int) = myDatabase.mainDao.getSinglePost(postId).flowOn(dispatcher)
 
-    override fun getPosts(start: Int, end: Int) = myDatabase.mainDao.getPosts(start, end)
+    override fun getPosts() = myDatabase.mainDao.getPosts().flowOn(dispatcher)
 
-    override fun getPostComments(postId: Int, start: Int, end: Int) = myDatabase.mainDao
-        .getPostComments(postId, start, end)
-
-    override fun getPostComments(postId: Int) = myDatabase.mainDao.getPostComments(postId)
+    override fun getPostComments(postId: Int) = myDatabase.mainDao.getPostComments(postId).flowOn(dispatcher)
 
     override suspend fun updatePost(post: Post) {
         withContext(dispatcher) {

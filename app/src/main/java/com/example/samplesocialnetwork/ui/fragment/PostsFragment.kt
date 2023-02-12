@@ -5,26 +5,30 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.samplesocialnetwork.Data
 import com.example.samplesocialnetwork.TAG
 import com.example.samplesocialnetwork.databinding.FragmentPostsBinding
 import com.example.samplesocialnetwork.datasource.local.db.MyDatabase
+import com.example.samplesocialnetwork.datasource.local.db.model.Post
 import com.example.samplesocialnetwork.ui.adapter.PostsAdapter
 import com.example.samplesocialnetwork.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.min
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
@@ -36,6 +40,8 @@ class PostsFragment : Fragment() {
     private val binding
         get() = _binding!!
     private val viewModel by viewModels<PostsViewModel>()
+    private lateinit var posts: List<Post>
+    private var end = 10
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,15 +64,23 @@ class PostsFragment : Fragment() {
                 launch {
                     Data.initDB(myDatabase)
                     Log.d(TAG, "inside lifecycle")
-                    viewModel.postFlow.collectLatest {
-                        postsAdapter.submitData(it)
-                        postsAdapter.refresh()
-                    }
-                }
-                launch {
-                    postsAdapter.loadStateFlow.collect {
-                        binding.prependProgress.isVisible = it.source.prepend is LoadState.Loading
-                        binding.appendProgress.isVisible = it.source.append is LoadState.Loading
+                    viewModel.getPosts().collectLatest {
+                        posts = it
+                        postsAdapter.submitList(getPosts())
+                        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                                launch {
+                                    Log.d(TAG, "Reached end of recyclerview")
+                                    if (!recyclerView.canScrollVertically(1)) {
+                                        binding.appendProgress.visibility = VISIBLE
+                                        delay(3000)
+                                        postsAdapter.submitList(getPosts())
+                                        binding.appendProgress.visibility = GONE
+                                        Log.d(TAG, "reached end of recyclerview")
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -77,5 +91,12 @@ class PostsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun getPosts(): List<Post> {
+        val last = min(end, posts.size)
+        val list = posts.subList(0, last)
+        end += 10
+        return list
     }
 }
