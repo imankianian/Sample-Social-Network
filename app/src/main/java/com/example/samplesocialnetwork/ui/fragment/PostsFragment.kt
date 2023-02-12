@@ -60,6 +60,7 @@ class PostsFragment : Fragment() {
                     Log.d(TAG, "inside lifecycle")
                     viewModel.postFlow.collectLatest {
                         postsAdapter.submitData(it)
+                        postsAdapter.refresh()
                     }
                 }
                 launch {

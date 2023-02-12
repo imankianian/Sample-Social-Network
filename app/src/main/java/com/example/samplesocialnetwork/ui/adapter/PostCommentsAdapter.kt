@@ -2,14 +2,14 @@ package com.example.samplesocialnetwork.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.samplesocialnetwork.databinding.CommentLayoutBinding
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 
 class PostCommentsAdapter:
-    PagingDataAdapter<Comment, PostCommentsAdapter.CommentViewHolder>(CommentComparator) {
+    ListAdapter<Comment, PostCommentsAdapter.CommentViewHolder>(CommentComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         CommentViewHolder(CommentLayoutBinding.inflate(

@@ -1,6 +1,5 @@
 package com.example.samplesocialnetwork.datasource.local.db.dao
 
-import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
@@ -34,6 +33,9 @@ interface MainDao {
     @Query("SELECT * FROM posts WHERE id >= :start AND id < :end")
     fun getPosts(start: Int, end: Int): List<Post>
 
+    @Query("SELECT * FROM comments WHERE post_id = :postId AND id >= :start AND id < :end")
+    fun getPostComments(postId: Int, start: Int, end: Int): List<Comment>
+
     @Query("SELECT * FROM comments WHERE post_id = :postId")
-    fun getPostComments(postId: Int): PagingSource<Int, Comment>
+    fun getPostComments(postId: Int): Flow<List<Comment>>
 }

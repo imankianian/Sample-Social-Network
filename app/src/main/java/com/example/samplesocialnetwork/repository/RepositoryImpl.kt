@@ -3,6 +3,7 @@ package com.example.samplesocialnetwork.repository
 import com.example.samplesocialnetwork.datasource.local.LocalDataSource
 import com.example.samplesocialnetwork.datasource.local.db.model.Comment
 import com.example.samplesocialnetwork.datasource.local.db.model.Post
+import com.example.samplesocialnetwork.datasource.local.paging.CommentPagingSource
 import com.example.samplesocialnetwork.datasource.local.paging.PostPagingSource
 import com.example.samplesocialnetwork.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
